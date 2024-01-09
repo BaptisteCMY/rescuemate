@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'NeedHelp.dart';
+import 'ParameterPage.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -37,8 +38,8 @@ class HomePage extends StatelessWidget {
       ),
       endDrawer: Drawer(
         elevation: 16, // Change the elevation (default is 16)
-        backgroundColor: Color(0xFF1D6E73).withOpacity(0.9), // Change the background color and transparency
-        child: Container(
+        backgroundColor: const Color(0xFF1D6E73).withOpacity(0.9), // Change the background color and transparency
+        child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.7, // Change the width
           child: ListView(
             padding: EdgeInsets.zero,
@@ -137,7 +138,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                      pageBuilder: (_, __, ___) => const ParameterPage(),
                     ),
                   );
                 },

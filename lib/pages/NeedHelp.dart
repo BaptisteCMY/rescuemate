@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rescuemate/pages/ParameterPage.dart';
 import 'HomePage.dart';
 
 class NeedHelp extends StatelessWidget {
@@ -7,8 +8,17 @@ class NeedHelp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-          leading: Padding(
+      appBar: AppBar(
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const HomePage(),
+              ),
+            );
+          },
+          child: Padding(
             padding: const EdgeInsets.all(8.0),
             child: Image.asset(
               "assets/img/logoRM.png",
@@ -16,29 +26,30 @@ class NeedHelp extends StatelessWidget {
               height: 30,
             ),
           ),
-          backgroundColor: Colors.white,
-          title: const Text(
-            'RescueMate',
-            style: TextStyle(fontSize: 28, color: Colors.black),
-          ),
-          centerTitle: true,
-          actions: [
-            Builder(
-              builder: (context) => IconButton(
-                icon: const Icon(Icons.menu),
-                onPressed: () {
-                  Scaffold.of(context).openEndDrawer();
-                },
-              ),
-            ),
-          ],
-          // Increase the preferredSize
-          toolbarHeight: 60,
         ),
-        endDrawer: Drawer(
+        backgroundColor: Colors.white,
+        title: const Text(
+          'RescueMate',
+          style: TextStyle(fontSize: 28, color: Colors.black),
+        ),
+        centerTitle: true,
+        actions: [
+          Builder(
+            builder: (context) => IconButton(
+              icon: const Icon(Icons.menu),
+              onPressed: () {
+                Scaffold.of(context).openEndDrawer();
+              },
+            ),
+          ),
+        ],
+        // Increase the preferredSize
+        toolbarHeight: 60,
+      ),
+      endDrawer: Drawer(
           elevation: 16, // Change the elevation (default is 16)
-          backgroundColor: Color(0xFF1D6E73).withOpacity(0.9), // Change the background color and transparency
-          child: Container(
+          backgroundColor: const Color(0xFF1D6E73).withOpacity(0.9), // Change the background color and transparency
+          child: SizedBox(
             width: MediaQuery.of(context).size.width * 0.7, // Change the width
             child: ListView(
               padding: EdgeInsets.zero,
@@ -137,7 +148,7 @@ class NeedHelp extends StatelessWidget {
                     Navigator.push(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const NeedHelp(),
+                        pageBuilder: (_, __, ___) => const ParameterPage(),
                       ),
                     );
                   },
