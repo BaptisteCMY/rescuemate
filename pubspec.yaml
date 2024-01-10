@@ -28,9 +28,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+
   flutter:
     sdk: flutter
   provider: 6.1.1  # Assurez-vous d'utiliser la version correcte
+  url_launcher: 6.0.20
 
 
   # The following adds the Cupertino Icons font to your application.
