@@ -38,7 +38,7 @@ class HomePage extends StatelessWidget {
       ),
       endDrawer: Drawer(
         elevation: 16, // Change the elevation (default is 16)
-        backgroundColor: const Color(0xFF1D6E73).withOpacity(0.9), // Change the background color and transparency
+        backgroundColor: const Color(0xFF1D6E73).withOpacity(0.9),
         child: SizedBox(
           width: MediaQuery.of(context).size.width * 0.7, // Change the width
           child: ListView(

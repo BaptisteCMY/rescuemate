@@ -23,6 +23,10 @@ class _InscriptionState extends State<Inscription> {
   bool sstChecked = false;
   bool pse1Checked = false;
   bool pse2Checked = false;
+  TextEditingController nomController = TextEditingController();
+  TextEditingController prenomController = TextEditingController();
+  TextEditingController telephoneController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -239,8 +243,9 @@ class _InscriptionState extends State<Inscription> {
                       decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: nomController,
+                        decoration: const InputDecoration(
                           labelText: 'Nom',
                           border: OutlineInputBorder(),
                         ),
@@ -252,8 +257,9 @@ class _InscriptionState extends State<Inscription> {
                       decoration: const BoxDecoration(
                         color: Colors.white,
                       ),
-                      child: const TextField(
-                        decoration: InputDecoration(
+                      child: TextField(
+                        controller: prenomController,
+                        decoration: const InputDecoration(
                           labelText: 'Prénom',
                           border: OutlineInputBorder(),
                         ),
@@ -270,9 +276,10 @@ class _InscriptionState extends State<Inscription> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
-                  child: const TextField(
+                  child:  TextField(
+                    controller: telephoneController,
                     keyboardType: TextInputType.phone, // Utilisez TextInputType.phone pour le clavier numérique
-                    decoration: InputDecoration(
+                    decoration: const InputDecoration(
                       labelText: 'Numéro de téléphone',
                       border: OutlineInputBorder(),
                     ),
@@ -287,8 +294,9 @@ class _InscriptionState extends State<Inscription> {
                   decoration: const BoxDecoration(
                     color: Colors.white,
                   ),
-                  child: const TextField(
-                    decoration: InputDecoration(
+                  child:  TextField(
+                    controller: emailController,
+                    decoration: const InputDecoration(
                       labelText: 'Email',
                       border: OutlineInputBorder(),
                     ),
@@ -372,24 +380,52 @@ class _InscriptionState extends State<Inscription> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(const EdgeInsets.only(left: 60, right: 60, top: 10, bottom: 10)),
-                    backgroundColor: MaterialStateProperty.all(Colors.cyanAccent.withOpacity(0.5),),
-                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                      RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(20.0),
-                        side: const BorderSide(color: Colors.black),
-                      ),
-                    ),
+                  style: const ButtonStyle(
+                    // ... (votre style existant)
                   ),
                   onPressed: () {
-                    // Naviguer vers la page HomePage lorsque le bouton "Soumettre" est pressé
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const HomePage(),
-                      ),
-                    );
+                    // Récupérez les valeurs depuis les contrôleurs
+                    String nom = nomController.text.trim();
+                    String prenom = prenomController.text.trim();
+                    String telephone = telephoneController.text.trim();
+                    String email = emailController.text.trim();
+
+                    print('Nom: $nom');
+                    print('Prenom: $prenom');
+                    print('Telephone: $telephone');
+                    print('Email: $email');
+
+
+                    // Vérifiez si tous les champs du formulaire (sauf la checkbox) sont remplis
+                    if (nom.isNotEmpty && prenom.isNotEmpty && telephone.isNotEmpty && email.isNotEmpty) {
+                      // Vérifiez également si au moins une checkbox est cochée
+
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          pageBuilder: (_, __, ___) => const HomePage(),
+                        ),
+                      );
+                    } else {
+                      // Affichez un message d'erreur si des champs du formulaire sont manquants
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Formulaire incomplet'),
+                            content: const Text('Veuillez remplir tous les champs du formulaire.'),
+                            actions: [
+                              ElevatedButton(
+                                onPressed: () {
+                                  Navigator.of(context).pop();
+                                },
+                                child: const Text('OK'),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                    }
                   },
                   child: const Text('Soumettre', style: TextStyle(color: Colors.black)),
                 ),
