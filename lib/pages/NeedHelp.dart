@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'premiers_secours.dart';
+import 'ParameterPage.dart';
 
 class NeedHelp extends StatefulWidget {
   const NeedHelp({Key? key}) : super(key: key);
@@ -50,17 +52,126 @@ class _NeedHelp extends State<NeedHelp> {
         toolbarHeight: 60,
       ),
       endDrawer: Drawer(
-        elevation: 16,
+        elevation: 16, // Change the elevation (default is 16)
         backgroundColor: const Color(0xFF1D6E73).withOpacity(0.9),
-        child: Container(
-          width: MediaQuery.of(context).size.width * 0.7,
+        child: SizedBox(
+          width: MediaQuery.of(context).size.width * 0.7, // Change the width
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
               const SizedBox(height: 50),
-              buildDrawerItem('Accueil', const HomePage()),
-              buildDrawerItem('Premiers secours', const NeedHelp()),
-              // ... Autres éléments du menu ...
+              ListTile(
+                title: const Text(
+                  'Accueil',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const HomePage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Premiers secours',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const premiers_secours(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Mon compte',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Localisation',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Chat',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Formations',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'ParamÃ¨tres',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const ParameterPage(),
+                    ),
+                  );
+                },
+              ),
+              ListTile(
+                title: const Text(
+                  'Informations',
+                  style: TextStyle(color: Colors.white, fontSize: 18),
+                ),
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                    ),
+                  );
+                },
+              ),
             ],
           ),
         ),
