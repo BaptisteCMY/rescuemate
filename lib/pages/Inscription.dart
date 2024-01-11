@@ -380,8 +380,15 @@ class _InscriptionState extends State<Inscription> {
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
                 child: ElevatedButton(
-                  style: const ButtonStyle(
-                    // ... (votre style existant)
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(const EdgeInsets.only(left: 60, right: 60, top: 5, bottom: 5)),
+                    backgroundColor: MaterialStateProperty.all(Colors.cyanAccent.withOpacity(0.5),),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20.0),
+                        side: const BorderSide(color: Colors.black),
+                      ),
+                    ),
                   ),
                   onPressed: () {
                     // Récupérez les valeurs depuis les contrôleurs
@@ -390,16 +397,9 @@ class _InscriptionState extends State<Inscription> {
                     String telephone = telephoneController.text.trim();
                     String email = emailController.text.trim();
 
-                    print('Nom: $nom');
-                    print('Prenom: $prenom');
-                    print('Telephone: $telephone');
-                    print('Email: $email');
-
 
                     // Vérifiez si tous les champs du formulaire (sauf la checkbox) sont remplis
                     if (nom.isNotEmpty && prenom.isNotEmpty && telephone.isNotEmpty && email.isNotEmpty) {
-                      // Vérifiez également si au moins une checkbox est cochée
-
                       Navigator.push(
                         context,
                         PageRouteBuilder(
