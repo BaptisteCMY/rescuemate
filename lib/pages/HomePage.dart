@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'NeedHelp.dart';
 import 'ParameterPage.dart';
+import 'premiers_secours.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -68,7 +69,7 @@ class HomePage extends StatelessWidget {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                      pageBuilder: (_, __, ___) => const premiers_secours(),
                     ),
                   );
                 },
@@ -131,7 +132,7 @@ class HomePage extends StatelessWidget {
               ),
               ListTile(
                 title: const Text(
-                  'Paramètres',
+                  'ParamÃ¨tres',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 onTap: () {
@@ -200,7 +201,7 @@ class HomePage extends StatelessWidget {
                     Navigator.push(
                       context,
                       PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const NeedHelp(),
+                        pageBuilder: (_, __, ___) => const premiers_secours(),
                       ),
                     );
                   },
@@ -238,4 +239,3 @@ class HomePage extends StatelessWidget {
     );
   }
 }
-
