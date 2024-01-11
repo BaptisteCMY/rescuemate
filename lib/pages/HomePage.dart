@@ -132,7 +132,7 @@ class HomePage extends StatelessWidget {
               ),
               ListTile(
                 title: const Text(
-                  'ParamÃ¨tres',
+                  'Paramètres',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 onTap: () {

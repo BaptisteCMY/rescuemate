@@ -141,7 +141,7 @@ class _PremiersSecoursState extends State<premiers_secours> {
               ),
               ListTile(
                 title: const Text(
-                  'Paramatres',
+                  'Paramètres',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 onTap: () {
