@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:rescuemate/pages/globals.dart';
 import 'HomePage.dart';
 import 'premiers_secours.dart';
 import 'ParameterPage.dart';
+import 'package:url_launcher/url_launcher.dart';
+import 'package:permission_handler/permission_handler.dart';
+import 'globals.dart';
 
 class NeedHelp extends StatefulWidget {
   const NeedHelp({Key? key}) : super(key: key);
@@ -11,6 +15,55 @@ class NeedHelp extends StatefulWidget {
 }
 
 class _NeedHelp extends State<NeedHelp> {
+  void _launchPhone(String phoneNumber) async {
+    String url = 'tel:$phoneNumber';
+    await launch(url);
+  }
+
+  void _sendingSMS(String sms, String phoneNumber) async {
+    String url = 'sms:$phoneNumber?body=$sms';
+    await launch(url);
+  }
+
+
+  void checkAndRequestPhonePermission() async {
+    // Vérifiez l'état actuel de l'autorisation
+    PermissionStatus status = await Permission.phone.status;
+
+    // Si l'autorisation n'est pas déjà accordée, demandez-la à l'utilisateur
+    if (!status.isGranted) {
+      status = await Permission.phone.request();
+    }
+
+    // Si l'autorisation est accordée, vous pouvez maintenant effectuer l'action qui nécessitait cette autorisation
+    if (status.isGranted) {
+      // Faire quelque chose qui nécessite l'autorisation, comme appeler un numéro de téléphone
+      _launchPhone('0781913733');
+    } else {
+      // L'utilisateur a refusé l'autorisation ou une erreur s'est produite
+      // Vous pouvez afficher un message à l'utilisateur pour l'informer que l'autorisation est nécessaire pour effectuer cette action
+    }
+  }
+
+  void checkAndRequestSendSMS() async {
+    // Vérifiez l'état actuel de l'autorisation
+    PermissionStatus status = await Permission.sms.status;
+
+    // Si l'autorisation n'est pas déjà accordée, demandez-la à l'utilisateur
+    if (!status.isGranted) {
+      status = await Permission.sms.request();
+    }
+
+    // Si l'autorisation est accordée, vous pouvez maintenant effectuer l'action qui nécessitait cette autorisation
+    if (status.isGranted) {
+      // Faire quelque chose qui nécessite l'autorisation, comme appeler un numéro de téléphone
+        _sendingSMS('lalalo','Maman');
+    } else {
+      // L'utilisateur a refusé l'autorisation ou une erreur s'est produite
+      // Vous pouvez afficher un message à l'utilisateur pour l'informer que l'autorisation est nécessaire pour effectuer cette action
+    }
+  }
+
   bool etouffement = false;
   bool saignement = false;
   bool vertiges = false;
@@ -406,12 +459,7 @@ class _NeedHelp extends State<NeedHelp> {
         backgroundColor: Colors.cyanAccent.withOpacity(0.5),
       ),
       onPressed: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            pageBuilder: (_, __, ___) => const NeedHelp(),
-          ),
-        );
+        sendHelpMessage(); // Appeler la méthode pour envoyer le message d'aide
       },
       child: const Text(
         "Soumettre",
@@ -419,5 +467,59 @@ class _NeedHelp extends State<NeedHelp> {
         textAlign: TextAlign.center,
       ),
     );
+  }
+
+  void sendHelpMessage() {
+    String message = ''; // Initialiser le message vide
+
+    // Vérifier si c'est la victime ou le témoin et ajouter cette information au message
+    String role = 'Victime'; // Par défaut, considérez que c'est la victime
+    if (conscient || inconscient || respire || neRespirePas) {
+      role = 'Témoin';
+    }
+    message += 'RescueMate : nous avons besoin de vous ! Je suis $role. Problème :'; // Ajouter cette information au début du message
+
+    // Vérifier quelles cases sont cochées et ajouter le contenu du message en conséquence
+    if (etouffement) {
+      message += 'Étouffement ';
+    }
+    if (saignement) {
+      message += 'Saignement ';
+    }
+    if (vertiges) {
+      message += 'Vertiges ';
+    }
+    if (coince) {
+      message += 'Coincé ';
+    }
+    if (hypothermie) {
+      message += 'Hypothermie ';
+    }
+    if (conscient) {
+      message += 'Conscient ';
+    }
+    if (inconscient) {
+      message += 'Inconscient ';
+    }
+    if (respire) {
+      message += 'Respire ';
+    }
+    if (neRespirePas) {
+      message += 'Ne respire pas ';
+    }
+
+    // Ajouter le commentaire s'il y en a un
+    // Vous pouvez récupérer le commentaire à partir d'un contrôleur de texte
+    // Remarque : Vous devez ajouter un contrôleur de texte pour le commentaire dans votre code
+    // et récupérer la valeur du texte de ce contrôleur
+    // Par exemple : TextEditingController _commentController = TextEditingController();
+    // puis, dans le onPressed(), vous pouvez obtenir le commentaire en utilisant _commentController.text
+    String commentaire = ''; // Remplacer par la valeur réelle du commentaire
+    if (commentaire.isNotEmpty) {
+      message += 'RescueMate: $commentaire';
+    }
+
+    // Envoyer le message
+    _sendingSMS(message, globalPhoneNumber);
   }
 }

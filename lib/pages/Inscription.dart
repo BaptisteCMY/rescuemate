@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'HomePage.dart';
-import 'ParameterPage.dart';
-import 'NeedHelp.dart';
 
 const String _url = 'https://auth.service-public.fr/realms/service-public/protocol/openid-connect/auth?response_type=code&client_id=spclient&scope=france_connect%20address%20phone%20openid%20profile%20email&state=tN2-J4f5G299Vo7E-AKtX3HeqeGICasvR-3txMPPkLw%3D&redirect_uri=https://www.service-public.fr/openid_connect_login&nonce=WzUy1FuYStOh-wGYGtQEgMUYF3TzYusLTyypkUqkTWE&prompt=login';
 
 void _launchURL(String url) async {
   if (!await launch(_url)) throw 'Could not launch $_url';
 }
+
+final RegExp emailRegex = RegExp(
+  r'^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$',
+);
+
+final RegExp phoneRegex = RegExp(
+  r'^[0-9]{10}$',
+);
 
 class Inscription extends StatefulWidget {
   const Inscription({Key? key}) : super(key: key);
@@ -262,9 +268,53 @@ class _InscriptionState extends State<Inscription> {
                     String telephone = telephoneController.text.trim();
                     String email = emailController.text.trim();
 
-
                     // Vérifiez si tous les champs du formulaire (sauf la checkbox) sont remplis
                     if (nom.isNotEmpty && prenom.isNotEmpty && telephone.isNotEmpty && email.isNotEmpty) {
+                      // Vérifiez si l'email est valide
+                      if (!emailRegex.hasMatch(email)) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Email invalide'),
+                              content: const Text('Veuillez saisir une adresse e-mail valide.'),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        return;
+                      }
+
+                      // Vérifiez si le numéro de téléphone est valide
+                      if (!phoneRegex.hasMatch(telephone)) {
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: const Text('Numéro de téléphone invalide'),
+                              content: const Text('Veuillez saisir un numéro de téléphone valide.'),
+                              actions: [
+                                ElevatedButton(
+                                  onPressed: () {
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: const Text('OK'),
+                                ),
+                              ],
+                            );
+                          },
+                        );
+                        return;
+                      }
+
+                      // Si tout est valide, continuez
                       Navigator.push(
                         context,
                         PageRouteBuilder(

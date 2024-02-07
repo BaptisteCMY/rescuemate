@@ -33,6 +33,7 @@ dependencies:
     sdk: flutter
   provider: 6.1.1  # Assurez-vous d'utiliser la version correcte
   url_launcher: 6.0.20
+  permission_handler: 10.3.0
 
 
   # The following adds the Cupertino Icons font to your application.

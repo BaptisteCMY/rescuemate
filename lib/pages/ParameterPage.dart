@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'NeedHelp.dart';
+import 'Contact.dart';
 
 class ParameterPage extends StatelessWidget {
   const ParameterPage({Key? key}) : super(key: key);
@@ -230,7 +231,7 @@ class ParameterPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                      pageBuilder: (_, __, ___) => const Contact(),
                     ),
                   );
                 },
@@ -238,7 +239,7 @@ class ParameterPage extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Contacts d'urgence",
+                      "Contacts personnel",
                       style: TextStyle(fontSize: 19, color: Colors.black54),
                       textAlign: TextAlign.center,
                     ),

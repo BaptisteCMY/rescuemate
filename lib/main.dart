@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rescuemate/pages/HomePage.dart';
 import 'package:rescuemate/pages/Inscription.dart';
+import 'package:permission_handler/permission_handler.dart';
 
 void main() {
   runApp(const MyApp());
@@ -14,7 +15,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'RescueMate',
       theme: ThemeData(scaffoldBackgroundColor: const Color(0xFFDDFBFF)),
-      home: const Inscription(),
+      home: const HomePage(),
     );
   }
 }
