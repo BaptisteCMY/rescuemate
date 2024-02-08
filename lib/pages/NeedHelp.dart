@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:rescuemate/pages/globals.dart';
 import 'HomePage.dart';
 import 'premiers_secours.dart';
@@ -15,6 +16,24 @@ class NeedHelp extends StatefulWidget {
 }
 
 class _NeedHelp extends State<NeedHelp> {
+  Position? _currentLocation;
+  late bool servicePermission = false;
+  late LocationPermission permission;
+
+  String _currentAdress = "";
+
+  Future<Position> _getCurrentLocation() async {
+    servicePermission = await Geolocator.isLocationServiceEnabled();
+    if (!servicePermission) {
+      print("Service disabled");
+    }
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+    }
+    return await Geolocator.getCurrentPosition();
+  }
+
   void _launchPhone(String phoneNumber) async {
     String url = 'tel:$phoneNumber';
     await launch(url);
@@ -57,7 +76,7 @@ class _NeedHelp extends State<NeedHelp> {
     // Si l'autorisation est accordée, vous pouvez maintenant effectuer l'action qui nécessitait cette autorisation
     if (status.isGranted) {
       // Faire quelque chose qui nécessite l'autorisation, comme appeler un numéro de téléphone
-        _sendingSMS('lalalo','Maman');
+      _sendingSMS('lalalo', 'Maman');
     } else {
       // L'utilisateur a refusé l'autorisation ou une erreur s'est produite
       // Vous pouvez afficher un message à l'utilisateur pour l'informer que l'autorisation est nécessaire pour effectuer cette action
@@ -94,12 +113,13 @@ class _NeedHelp extends State<NeedHelp> {
         centerTitle: true,
         actions: [
           Builder(
-            builder: (context) => IconButton(
-              icon: const Icon(Icons.menu),
-              onPressed: () {
-                Scaffold.of(context).openEndDrawer();
-              },
-            ),
+            builder: (context) =>
+                IconButton(
+                  icon: const Icon(Icons.menu),
+                  onPressed: () {
+                    Scaffold.of(context).openEndDrawer();
+                  },
+                ),
           ),
         ],
         toolbarHeight: 60,
@@ -108,7 +128,10 @@ class _NeedHelp extends State<NeedHelp> {
         elevation: 16, // Change the elevation (default is 16)
         backgroundColor: const Color(0xFF1D6E73).withOpacity(0.9),
         child: SizedBox(
-          width: MediaQuery.of(context).size.width * 0.7, // Change the width
+          width: MediaQuery
+              .of(context)
+              .size
+              .width * 0.7, // Change the width
           child: ListView(
             padding: EdgeInsets.zero,
             children: <Widget>[
@@ -412,11 +435,9 @@ class _NeedHelp extends State<NeedHelp> {
     );
   }
 
-  Widget buildCheckboxListTile(
-      String title,
+  Widget buildCheckboxListTile(String title,
       bool value,
-      void Function(bool?) onChanged,
-      ) {
+      void Function(bool?) onChanged,) {
     return CheckboxListTile(
       title: Text(title),
       value: value,
@@ -469,15 +490,23 @@ class _NeedHelp extends State<NeedHelp> {
     );
   }
 
-  void sendHelpMessage() {
-    String message = ''; // Initialiser le message vide
+  void sendHelpMessage() async {
+    _currentLocation = await _getCurrentLocation();
+    print(
+        "Latitude: ${_currentLocation?.latitude}, Longitude: ${_currentLocation
+            ?.longitude}");
 
     // Vérifier si c'est la victime ou le témoin et ajouter cette information au message
     String role = 'Victime'; // Par défaut, considérez que c'est la victime
     if (conscient || inconscient || respire || neRespirePas) {
       role = 'Témoin';
     }
-    message += 'RescueMate : nous avons besoin de vous ! Je suis $role. Problème :'; // Ajouter cette information au début du message
+    String url = 'https://www.google.fr/maps/dir//';
+    String coordinates = '${_currentLocation?.latitude},${_currentLocation?.longitude}';
+    String message = 'RescueMate: nous avons besoin de vous ici : $url$coordinates! Je suis $role. Problème :';
+
+
+
 
     // Vérifier quelles cases sont cochées et ajouter le contenu du message en conséquence
     if (etouffement) {
