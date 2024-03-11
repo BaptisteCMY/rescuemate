@@ -1,39 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:rescuemate/pages/globals.dart';
 import 'NeedHelp.dart';
 import 'ParameterPage.dart';
 import 'premiers_secours.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'HomePage.dart';
 
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  void _launchPhone(String phoneNumber) async {
-    String url = 'tel:$phoneNumber';
-    await launch(url);
-  }
-
-  void checkAndRequestPhonePermission() async {
-    // Vérifiez l'état actuel de l'autorisation
-    PermissionStatus status = await Permission.phone.status;
-
-    // Si l'autorisation n'est pas déjà accordée, demandez-la à l'utilisateur
-    if (!status.isGranted) {
-      status = await Permission.phone.request();
-    }
-
-    // Si l'autorisation est accordée, vous pouvez maintenant effectuer l'action qui nécessitait cette autorisation
-    if (status.isGranted) {
-      // Faire quelque chose qui nécessite l'autorisation, comme appeler un numéro de téléphone
-      _launchPhone('0781913733');
-    } else {
-      // L'utilisateur a refusé l'autorisation ou une erreur s'est produite
-      // Vous pouvez afficher un message à l'utilisateur pour l'informer que l'autorisation est nécessaire pour effectuer cette action
-    }
-  }
-
+class PLS extends StatelessWidget {
+  const PLS ({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -191,74 +163,47 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            const Text('URGENCE', style: TextStyle(fontSize: 42, fontFamily: 'Poppins')),
-            const Padding(padding: EdgeInsets.all(20)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Align buttons horizontally
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10)),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xFF97A2FF)),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const NeedHelp(),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              const Text('PLS ', style: TextStyle(fontSize: 32, fontFamily: 'Poppins')),
+              const Padding(padding: EdgeInsets.all(20)),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Column(
+                    children: [
+                      Image.asset(
+                        'assets/img/MISE_PLS.png',
+                        width: 400,
+                        height: 400,
                       ),
-                    );
-                  },
-                  child: const Text(
-                    "J'ai besoin\n d'aides",
-                    style: TextStyle(fontSize: 18, color: Colors.black54),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 40),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10)),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xFFA6FF97)),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const premiers_secours(),
+                      const SizedBox(height: 10),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: RichText(
+                          textAlign: TextAlign.center,
+                          text: const TextSpan(
+                            text: 'Ne pas mettre en PLS si la nuque a pus être en dommagé (exemple accident de moto).\n',
+                            style: TextStyle(fontSize: 20, color: Colors.red), // Couleur rouge pour la première phrase
+                            children: <TextSpan>[
+                              TextSpan(
+                                text: '',
+                                style: TextStyle(color: Colors.black87),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    );
-                  },
-                  child: const Text(
-                    "Premiers\n Secours",
-                    style: TextStyle(fontSize: 18, color: Colors.black54),
-                    textAlign: TextAlign.center,
+                    ],
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(const EdgeInsets.only(left: 120, right: 120, top: 20, bottom: 20)),
-                backgroundColor: MaterialStateProperty.all(const Color(0xFFFF856A)),
+                ],
               ),
-              onPressed: () {
-                globalUrgence = true;
-                checkAndRequestPhonePermission();
-              },
-              child: const Text(
-                "Urgence",
-                style: TextStyle(fontSize: 18, color: Colors.black54),
-                textAlign: TextAlign.center,
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );

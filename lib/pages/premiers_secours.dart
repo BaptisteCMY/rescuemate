@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'HomePage.dart';
+import 'eval_situation.dart';
+import 'RCP.dart';
+import 'etouffement.dart';
+import 'PLS.dart';
+
 
 class premiers_secours extends StatefulWidget {
   const premiers_secours({Key? key}) : super(key: key);
@@ -141,7 +146,7 @@ class _PremiersSecoursState extends State<premiers_secours> {
               ),
               ListTile(
                 title: const Text(
-                  'Paramètres',
+                  'Paramatres',
                   style: TextStyle(color: Colors.white, fontSize: 18),
                 ),
                 onTap: () {
@@ -240,7 +245,12 @@ class _PremiersSecoursState extends State<premiers_secours> {
 
               InkWell(
                 onTap: () {
-                  // Action à effectuer lorsque le bouton est pressé
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const eval_situation(),
+                    ),
+                  );
                 },
                 child: Ink.image(
                   image: AssetImage('assets/img/premier_regard.png'),
@@ -257,7 +267,12 @@ class _PremiersSecoursState extends State<premiers_secours> {
 
               InkWell(
                 onTap: () {
-                  // Action à effectuer lorsque le bouton est pressé
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const RCP(),
+                    ),
+                  );
                 },
                 child: Ink.image(
                   image: AssetImage('assets/img/RCP.png'),
@@ -274,7 +289,12 @@ class _PremiersSecoursState extends State<premiers_secours> {
 
               InkWell(
                 onTap: () {
-                  // Action à effectuer lorsque le bouton est pressé
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const etouffement(),
+                    ),
+                  );
                 },
                 child: Ink.image(
                   image: AssetImage('assets/img/étouffement.png'),
@@ -291,7 +311,12 @@ class _PremiersSecoursState extends State<premiers_secours> {
 
               InkWell(
                 onTap: () {
-                  // Action à effectuer lorsque le bouton est pressé
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      pageBuilder: (_, __, ___) => const PLS(),
+                    ),
+                  );
                 },
                 child: Ink.image(
                   image: AssetImage('assets/img/PLS.png'),

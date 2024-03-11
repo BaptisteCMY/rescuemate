@@ -1,39 +1,14 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:rescuemate/pages/globals.dart';
 import 'NeedHelp.dart';
 import 'ParameterPage.dart';
 import 'premiers_secours.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:permission_handler/permission_handler.dart';
+import 'HomePage.dart';
+import 'RCP.dart';
+import 'PLS.dart';
 
-
-class HomePage extends StatelessWidget {
-  const HomePage({Key? key}) : super(key: key);
-
-  void _launchPhone(String phoneNumber) async {
-    String url = 'tel:$phoneNumber';
-    await launch(url);
-  }
-
-  void checkAndRequestPhonePermission() async {
-    // Vérifiez l'état actuel de l'autorisation
-    PermissionStatus status = await Permission.phone.status;
-
-    // Si l'autorisation n'est pas déjà accordée, demandez-la à l'utilisateur
-    if (!status.isGranted) {
-      status = await Permission.phone.request();
-    }
-
-    // Si l'autorisation est accordée, vous pouvez maintenant effectuer l'action qui nécessitait cette autorisation
-    if (status.isGranted) {
-      // Faire quelque chose qui nécessite l'autorisation, comme appeler un numéro de téléphone
-      _launchPhone('0781913733');
-    } else {
-      // L'utilisateur a refusé l'autorisation ou une erreur s'est produite
-      // Vous pouvez afficher un message à l'utilisateur pour l'informer que l'autorisation est nécessaire pour effectuer cette action
-    }
-  }
-
+class eval_situation extends StatelessWidget {
+  const eval_situation({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -191,74 +166,92 @@ class HomePage extends StatelessWidget {
           ),
         ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.start,
-          children: [
-            const SizedBox(height: 40),
-            const Text('URGENCE', style: TextStyle(fontSize: 42, fontFamily: 'Poppins')),
-            const Padding(padding: EdgeInsets.all(20)),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center, // Align buttons horizontally
-              children: [
-                ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10)),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xFF97A2FF)),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const NeedHelp(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    "J'ai besoin\n d'aides",
-                    style: TextStyle(fontSize: 18, color: Colors.black54),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-                const SizedBox(width: 40),
-                ElevatedButton(
-                  style: ButtonStyle(
-                    padding: MaterialStateProperty.all(const EdgeInsets.only(left: 30, right: 30, top: 10, bottom: 10)),
-                    backgroundColor: MaterialStateProperty.all(const Color(0xFFA6FF97)),
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      PageRouteBuilder(
-                        pageBuilder: (_, __, ___) => const premiers_secours(),
-                      ),
-                    );
-                  },
-                  child: const Text(
-                    "Premiers\n Secours",
-                    style: TextStyle(fontSize: 18, color: Colors.black54),
-                    textAlign: TextAlign.center,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 40),
-            ElevatedButton(
-              style: ButtonStyle(
-                padding: MaterialStateProperty.all(const EdgeInsets.only(left: 120, right: 120, top: 20, bottom: 20)),
-                backgroundColor: MaterialStateProperty.all(const Color(0xFFFF856A)),
+      body: SingleChildScrollView(
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              const SizedBox(height: 40),
+              const Text('Evaluation de la', style: TextStyle(fontSize: 32, fontFamily: 'Poppins')),
+              const Text('situation', style: TextStyle(fontSize: 32, fontFamily: 'Poppins')),
+              const SizedBox(height: 15),
+              const Image(
+                image: AssetImage('assets/img/pouls.png'),
+                height: 200, // ajuster la hauteur de l'image selon votre besoin
+                width: 300, // ajuster la largeur de l'image selon votre besoin
               ),
-              onPressed: () {
-                globalUrgence = true;
-                checkAndRequestPhonePermission();
-              },
-              child: const Text(
-                "Urgence",
-                style: TextStyle(fontSize: 18, color: Colors.black54),
-                textAlign: TextAlign.center,
+              const SizedBox(height: 20),
+              RichText(
+                textAlign: TextAlign.center, // Centrer le texte
+                text: const TextSpan(
+                  style: TextStyle(color: Colors.black),
+                  children: [
+                    TextSpan(
+                      text: 'Si la personne est inconsciente, vérifiez si elle respire en collant votre oreille à son nez pendant 10 secondes. En même temps pour savoir si la personne est en arrêt cardiaque, si possible, placez 2 doigts au niveau du poignet ou bien à la carotide comme dans l\'exemple ci-dessus :',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 10),
+              RichText(
+                textAlign: TextAlign.left, // Aligner le texte à gauche
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.black),
+                  children: [
+                    const TextSpan(text: '• Si '),
+                    const TextSpan(text: 'elle respire', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: ', '),
+                    const TextSpan(text: 'commencez la '),
+                    TextSpan(
+                      text: 'position latérale de sécurité ',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const PLS()),
+                          );
+                        },
+                    ),
+                    const TextSpan(text: '.     '),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 10),
+              RichText(
+                textAlign: TextAlign.left, // Aligner le texte à gauche
+                text: TextSpan(
+                  style: const TextStyle(color: Colors.black),
+                  children: [
+                    const TextSpan(text: '• Si '),
+                    const TextSpan(text: 'elle ne respire pas', style: TextStyle(fontWeight: FontWeight.bold)),
+                    const TextSpan(text: ', commencez la ',),
+                    TextSpan(
+                      text: 'réanimation cardiopulmonaire (RCP)',
+                      style: const TextStyle(
+                        fontWeight: FontWeight.bold,
+                        decoration: TextDecoration.underline,
+                        color: Colors.blue,
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(builder: (_) => const RCP()),
+                          );
+                        },
+                    ),
+                    const TextSpan(text: '.'),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

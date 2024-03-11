@@ -6,7 +6,6 @@ import 'premiers_secours.dart';
 import 'ParameterPage.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:permission_handler/permission_handler.dart';
-import 'globals.dart';
 
 class NeedHelp extends StatefulWidget {
   const NeedHelp({Key? key}) : super(key: key);
@@ -20,7 +19,6 @@ class _NeedHelp extends State<NeedHelp> {
   late bool servicePermission = false;
   late LocationPermission permission;
 
-  String _currentAdress = "";
 
   Future<Position> _getCurrentLocation() async {
     servicePermission = await Geolocator.isLocationServiceEnabled();
@@ -549,6 +547,8 @@ class _NeedHelp extends State<NeedHelp> {
     }
 
     // Envoyer le message
-    _sendingSMS(message, globalPhoneNumber);
+    else{
+      _sendingSMS(message, globalPhoneNumber);
+    }
   }
 }
