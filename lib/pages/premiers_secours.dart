@@ -4,7 +4,9 @@ import 'eval_situation.dart';
 import 'RCP.dart';
 import 'etouffement.dart';
 import 'PLS.dart';
-
+import 'ParameterPage.dart';
+import 'AboutPage.dart';
+import 'hemorragie.dart';
 
 class premiers_secours extends StatefulWidget {
   const premiers_secours({Key? key}) : super(key: key);
@@ -15,7 +17,7 @@ class premiers_secours extends StatefulWidget {
 
 
 class _PremiersSecoursState extends State<premiers_secours> {
-  final List<String> options = ["Arrêt cardiaque", "Hémorragie", "Fracture", "Hypothermie", "Inconscient", "Étouffement"];
+  final List<String> options = ["Arrêt cardiaque", "Inconscient", "Étouffement", "Hémorragie"];
   List<bool> selectedOptions = [false, false, false, false, false, false];
   final _formKey = GlobalKey<FormState>();
   bool showError = false;
@@ -24,12 +26,22 @@ class _PremiersSecoursState extends State<premiers_secours> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            "assets/img/logoRM.png",
-            width: 30,
-            height: 30,
+        leading: GestureDetector( // Utilisez GestureDetector pour détecter les clics sur l'icône de l'application
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const HomePage(),
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              "assets/img/logoRM.png",
+              width: 30,
+              height: 30,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
@@ -153,7 +165,7 @@ class _PremiersSecoursState extends State<premiers_secours> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const HomePage(),
+                      pageBuilder: (_, __, ___) => const ParameterPage(),
                     ),
                   );
                 },
@@ -167,7 +179,7 @@ class _PremiersSecoursState extends State<premiers_secours> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const HomePage(),
+                      pageBuilder: (_, __, ___) => const AboutPage(),
                     ),
                   );
                 },
@@ -213,25 +225,49 @@ class _PremiersSecoursState extends State<premiers_secours> {
                   bool atLeastOneChecked = selectedOptions.any((element) => element);
 
                   if (!atLeastOneChecked) {
-                    // Aucune case cochée, afficher un message d'erreur
                     setState(() {
                       showError = true;
                     });
                   } else {
-                    // Au moins une case cochée, traiter le formulaire ici
                     setState(() {
                       showError = false;
                     });
-                    if (_formKey.currentState!.validate()) {
-                      // Valid flow
+
+                    if (selectedOptions[0]) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => RCP(),
+                        ),
+                      );
+                    } else if (selectedOptions[1]) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => eval_situation(),
+                        ),
+                      );
+                    } else if (selectedOptions[2]) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => etouffement(),
+                        ),
+                      );
+                    } else if (selectedOptions[3]) {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => hemorragie(),
+                        ),
+                      );
                     }
                   }
                 },
-
                 style: ElevatedButton.styleFrom(
                   primary: Colors.cyanAccent,
                   padding: const EdgeInsets.symmetric(horizontal: 80, vertical: 20),
-                  backgroundColor : Colors.cyanAccent.withOpacity(0.5),// Couleur orange pour le bouton Soumettre
+                  backgroundColor: Colors.cyanAccent.withOpacity(0.5),
                 ),
                 child: Text("Soumettre"),
               ),
@@ -320,6 +356,28 @@ class _PremiersSecoursState extends State<premiers_secours> {
                 },
                 child: Ink.image(
                   image: AssetImage('assets/img/PLS.png'),
+                  fit: BoxFit.contain,
+                  width: 400, // Ajustez la largeur du bouton ici
+                  height: 100, // Ajustez la hauteur du bouton ici
+                  child: Container(
+                    // Vous pouvez ajuster le padding, la marge, etc., pour personnaliser l'apparence du bouton
+                    alignment: Alignment.center,
+                  ),
+                ),
+              ),
+              const SizedBox(height : 25),
+
+              InkWell(
+                onTap: () {
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                        pageBuilder: (_, __, ___) => const hemorragie(),
+                  ),
+                  );
+                },
+                child: Ink.image(
+                  image: AssetImage('assets/img/hemorragie.png'),
                   fit: BoxFit.contain,
                   width: 400, // Ajustez la largeur du bouton ici
                   height: 100, // Ajustez la hauteur du bouton ici

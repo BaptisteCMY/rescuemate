@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'HomePage.dart';
 import 'NeedHelp.dart';
 import 'Contact.dart';
+import 'AboutPage.dart';
 
 class ParameterPage extends StatelessWidget {
   const ParameterPage({Key? key}) : super(key: key);
@@ -163,7 +164,7 @@ class ParameterPage extends StatelessWidget {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                      pageBuilder: (_, __, ___) => const AboutPage(),
                     ),
                   );
                 },

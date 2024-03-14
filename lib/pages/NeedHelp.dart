@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:rescuemate/pages/globals.dart';
+import 'package:rescuemate/pages/AboutPage.dart';
+import 'Contact.dart';
 import 'HomePage.dart';
 import 'premiers_secours.dart';
 import 'ParameterPage.dart';
@@ -18,6 +19,19 @@ class _NeedHelp extends State<NeedHelp> {
   Position? _currentLocation;
   late bool servicePermission = false;
   late LocationPermission permission;
+  late TextEditingController _commentController; // Ajoutez le contrôleur
+
+  @override
+  void initState() {
+    super.initState();
+    _commentController = TextEditingController(); // Initialisez le contrôleur
+  }
+
+  @override
+  void dispose() {
+    _commentController.dispose(); // Disposez du contrôleur
+    super.dispose();
+  }
 
 
   Future<Position> _getCurrentLocation() async {
@@ -37,10 +51,12 @@ class _NeedHelp extends State<NeedHelp> {
     await launch(url);
   }
 
-  void _sendingSMS(String sms, String phoneNumber) async {
-    String url = 'sms:$phoneNumber?body=$sms';
+  void _sendingSMS(String sms, List<String> phoneNumbers) async {
+    String numbers = phoneNumbers.join(';'); // Concaténer les numéros avec des points-virgules
+    String url = 'sms:$numbers?body=$sms';
     await launch(url);
   }
+
 
 
   void checkAndRequestPhonePermission() async {
@@ -73,8 +89,6 @@ class _NeedHelp extends State<NeedHelp> {
 
     // Si l'autorisation est accordée, vous pouvez maintenant effectuer l'action qui nécessitait cette autorisation
     if (status.isGranted) {
-      // Faire quelque chose qui nécessite l'autorisation, comme appeler un numéro de téléphone
-      _sendingSMS('lalalo', 'Maman');
     } else {
       // L'utilisateur a refusé l'autorisation ou une erreur s'est produite
       // Vous pouvez afficher un message à l'utilisateur pour l'informer que l'autorisation est nécessaire pour effectuer cette action
@@ -95,12 +109,22 @@ class _NeedHelp extends State<NeedHelp> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            "assets/img/logoRM.png",
-            width: 30,
-            height: 30,
+        leading: GestureDetector(
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const HomePage(),
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              "assets/img/logoRM.png",
+              width: 30,
+              height: 30,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
@@ -241,7 +265,7 @@ class _NeedHelp extends State<NeedHelp> {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                      pageBuilder: (_, __, ___) => const AboutPage(),
                     ),
                   );
                 },
@@ -456,6 +480,7 @@ class _NeedHelp extends State<NeedHelp> {
           borderRadius: BorderRadius.circular(10),
         ),
         child: TextField(
+          controller: _commentController, // Utilisez le contrôleur pour le champ de texte
           decoration: InputDecoration(
             hintText: 'Ajouter un commentaire...',
             border: OutlineInputBorder(
@@ -490,9 +515,10 @@ class _NeedHelp extends State<NeedHelp> {
 
   void sendHelpMessage() async {
     _currentLocation = await _getCurrentLocation();
-    print(
-        "Latitude: ${_currentLocation?.latitude}, Longitude: ${_currentLocation
-            ?.longitude}");
+    print("Latitude: ${_currentLocation?.latitude}, Longitude: ${_currentLocation?.longitude}");
+
+    // Liste des numéros de téléphone enregistrés
+    List<String> phoneNumbers = ['0781913733', '0603012898']; // Mettez vos numéros enregistrés ici
 
     // Vérifier si c'est la victime ou le témoin et ajouter cette information au message
     String role = 'Victime'; // Par défaut, considérez que c'est la victime
@@ -501,54 +527,46 @@ class _NeedHelp extends State<NeedHelp> {
     }
     String url = 'https://www.google.fr/maps/dir//';
     String coordinates = '${_currentLocation?.latitude},${_currentLocation?.longitude}';
-    String message = 'RescueMate: nous avons besoin de vous ici : $url$coordinates! Je suis $role. Problème :';
-
-
-
+    String message = 'RescueMate: nous avons besoin de vous ici : $url$coordinates! Je suis $role. Problème:';
 
     // Vérifier quelles cases sont cochées et ajouter le contenu du message en conséquence
     if (etouffement) {
-      message += 'Étouffement ';
+      message += ' Étouffement';
     }
     if (saignement) {
-      message += 'Saignement ';
+      message += ' Saignement';
     }
     if (vertiges) {
-      message += 'Vertiges ';
+      message += ' Vertiges';
     }
     if (coince) {
-      message += 'Coincé ';
+      message += ' Coincé';
     }
     if (hypothermie) {
-      message += 'Hypothermie ';
+      message += ' Hypothermie';
     }
     if (conscient) {
-      message += 'Conscient ';
+      message += ' Conscient';
     }
     if (inconscient) {
-      message += 'Inconscient ';
+      message += ' Inconscient';
     }
     if (respire) {
-      message += 'Respire ';
+      message += ' Respire';
     }
     if (neRespirePas) {
-      message += 'Ne respire pas ';
+      message += ' Ne respire pas';
     }
 
-    // Ajouter le commentaire s'il y en a un
-    // Vous pouvez récupérer le commentaire à partir d'un contrôleur de texte
-    // Remarque : Vous devez ajouter un contrôleur de texte pour le commentaire dans votre code
-    // et récupérer la valeur du texte de ce contrôleur
-    // Par exemple : TextEditingController _commentController = TextEditingController();
-    // puis, dans le onPressed(), vous pouvez obtenir le commentaire en utilisant _commentController.text
-    String commentaire = ''; // Remplacer par la valeur réelle du commentaire
+    // Récupérez le texte du champ de commentaire
+    String commentaire = _commentController.text;
+
+    // Ajoutez le contenu du commentaire au message s'il existe
     if (commentaire.isNotEmpty) {
-      message += 'RescueMate: $commentaire';
+      message += ' Commentaire: $commentaire';
     }
 
-    // Envoyer le message
-    else{
-      _sendingSMS(message, globalPhoneNumber);
-    }
+    // Envoyer le message à tous les numéros enregistrés
+    _sendingSMS(message, Contact.contacts);
   }
 }

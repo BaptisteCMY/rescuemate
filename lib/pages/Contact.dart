@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'globals.dart';
 import 'HomePage.dart'; // Importez la page d'accueil ici
 
 class Contact extends StatefulWidget {
   const Contact({Key? key}) : super(key: key);
+
+  static List<String> contacts = [];
 
   @override
   _ContactState createState() => _ContactState();
@@ -26,35 +27,44 @@ class _ContactState extends State<Contact> {
 
   void _saveContact(BuildContext context) {
     String contactNumber = _contactController.text;
-    globalPhoneNumber = contactNumber;
+    Contact.contacts.add(contactNumber);
 
-    // Affichez un SnackBar pour indiquer que le contact a été sauvegardé
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text('Contact sauvegardé: $contactNumber'),
-        duration: Duration(seconds: 2), // Durée du message
+        duration: Duration(seconds: 2),
       ),
     );
 
-    // Naviguer vers la page d'accueil après un délai
-    Future.delayed(Duration(seconds: 2), () {
-      Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(builder: (context) => HomePage()), // Remplacez HomePage() par le nom de votre page d'accueil
-      );
-    });
+    _contactController.clear();
+    setState(() {}); // Actualiser l'affichage des contacts après l'ajout
+  }
+
+  void _removeContact(int index) {
+    Contact.contacts.removeAt(index);
+    setState(() {}); // Actualiser l'affichage des contacts après la suppression
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            "assets/img/logoRM.png",
-            width: 30,
-            height: 30,
+        leading: GestureDetector( // Utilisez GestureDetector pour détecter les clics sur l'icône de l'application
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const HomePage(),
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              "assets/img/logoRM.png",
+              width: 30,
+              height: 30,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
@@ -86,8 +96,23 @@ class _ContactState extends State<Contact> {
             ),
             const SizedBox(height: 20),
             ElevatedButton(
-              onPressed: () => _saveContact(context), // Utilisez _saveContact avec le contexte
+              onPressed: () => _saveContact(context),
               child: const Text('Enregistrer le contact'),
+            ),
+            const SizedBox(height: 20),
+            Expanded(
+              child: ListView.builder(
+                itemCount: Contact.contacts.length,
+                itemBuilder: (context, index) {
+                  return ListTile(
+                    title: Text(Contact.contacts[index]),
+                    trailing: IconButton(
+                      icon: Icon(Icons.delete),
+                      onPressed: () => _removeContact(index),
+                    ),
+                  );
+                },
+              ),
             ),
           ],
         ),

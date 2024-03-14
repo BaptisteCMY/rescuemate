@@ -3,6 +3,7 @@ import 'NeedHelp.dart';
 import 'ParameterPage.dart';
 import 'premiers_secours.dart';
 import 'HomePage.dart';
+import 'AboutPage.dart';
 
 class etouffement extends StatelessWidget {
   const etouffement ({Key? key}) : super(key: key);
@@ -11,12 +12,22 @@ class etouffement extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        leading: Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Image.asset(
-            "assets/img/logoRM.png",
-            width: 30,
-            height: 30,
+        leading: GestureDetector( // Utilisez GestureDetector pour détecter les clics sur l'icône de l'application
+          onTap: () {
+            Navigator.push(
+              context,
+              PageRouteBuilder(
+                pageBuilder: (_, __, ___) => const HomePage(),
+              ),
+            );
+          },
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Image.asset(
+              "assets/img/logoRM.png",
+              width: 30,
+              height: 30,
+            ),
           ),
         ),
         backgroundColor: Colors.white,
@@ -154,7 +165,7 @@ class etouffement extends StatelessWidget {
                   Navigator.push(
                     context,
                     PageRouteBuilder(
-                      pageBuilder: (_, __, ___) => const NeedHelp(),
+                      pageBuilder: (_, __, ___) => const AboutPage(),
                     ),
                   );
                 },
